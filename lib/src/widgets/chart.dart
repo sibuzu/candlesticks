@@ -242,6 +242,7 @@ class Chart extends StatelessWidget {
                               ],
                             ),
                           ),
+                          /*
                           Expanded(
                             flex: 1,
                             child: Row(
@@ -294,7 +295,7 @@ class Chart extends StatelessWidget {
                                 ),
                               ],
                             ),
-                          ),
+                          ),*/
                           SizedBox(
                             height: 20,
                           ),
@@ -341,7 +342,7 @@ class Chart extends StatelessWidget {
                           children: [
                             DashLine(
                               length: constraints.maxHeight - 20,
-                               color: ColorPalette.grayColor,
+                              color: ColorPalette.grayColor,
                               direction: Axis.vertical,
                               thickness: 1.5,
                             ),

@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:candlesticks/src/constant/intervals.dart';
 import 'package:candlesticks/src/models/candle.dart';
 import 'package:candlesticks/src/theme/color_palette.dart';
 import 'package:candlesticks/src/widgets/chart.dart';
@@ -10,6 +9,8 @@ import 'models/candle.dart';
 /// StatefulWidget that holds Chart's State (index of
 /// current position and candles width).
 class Candlesticks extends StatefulWidget {
+  final String symbol;
+
   final List<Candle> candles;
 
   /// callback calls when user changes interval
@@ -20,6 +21,7 @@ class Candlesticks extends StatefulWidget {
   final List<String>? intervals;
 
   Candlesticks({
+    required this.symbol,
     required this.candles,
     required this.onIntervalChange,
     required this.interval,
@@ -77,6 +79,8 @@ class _CandlesticksState extends State<Candlesticks> {
           child: CircularProgressIndicator(),
         ),
       );
+
+    const btnIntervals = ['1d', '1h', '1m'];
     return Column(
       children: [
         Container(
@@ -85,72 +89,26 @@ class _CandlesticksState extends State<Candlesticks> {
             padding: const EdgeInsets.all(2.0),
             child: Row(
               children: [
-                CustomButton(
-                  onPressed: () {
-                    setState(() {
-                      candleWidth -= 2;
-                      candleWidth = max(candleWidth, 2);
-                    });
-                  },
-                  child: Icon(
-                    Icons.refresh,
-                    color: ColorPalette.grayColor,
-                  ),
-                ),
-                CustomButton(
-                  onPressed: () {
-                    setState(() {
-                      candleWidth += 2;
-                      candleWidth = min(candleWidth, 10);
-                    });
-                  },
-                  child: Icon(
-                    Icons.add,
-                    color: ColorPalette.grayColor,
-                  ),
-                ),
-                CustomButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return Center(
-                          child: Container(
-                            width: 200,
-                            color: ColorPalette.digalogColor,
-                            child: Wrap(
-                              children: (widget.intervals ?? intervals)
-                                  .map(
-                                    (e) => Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: CustomButton(
-                                        width: 50,
-                                        color: ColorPalette.lightGold,
-                                        child: Text(
-                                          e,
-                                          style: TextStyle(
-                                            color: ColorPalette.gold,
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          widget.onIntervalChange(e);
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: Text(
-                    widget.interval,
-                    style: TextStyle(
-                      color: ColorPalette.grayColor,
+                ...List<CustomButton>.generate(btnIntervals.length, (i) {
+                  return CustomButton(
+                    child: Text(
+                      btnIntervals[i],
+                      style: TextStyle(
+                        color: widget.interval == btnIntervals[i]
+                            ? ColorPalette.gold
+                            : ColorPalette.grayColor,
+                      ),
                     ),
+                    onPressed: () {
+                      if (widget.interval != btnIntervals[i])
+                        widget.onIntervalChange(btnIntervals[i]);
+                    },
+                  );
+                }).toList(),
+                Text(
+                  widget.symbol,
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
                 ),
               ],

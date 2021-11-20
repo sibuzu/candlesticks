@@ -32,10 +32,11 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Candle> candles = [];
   WebSocketChannel? _channel;
 
-  String interval = "1m";
+  String interval = "1d";
+  String symbol = "BTCUSDT";
 
   void binanceFetch(String interval) {
-    fetchCandles(symbol: "BTCUSDT", interval: interval).then(
+    fetchCandles(symbol: symbol, interval: interval).then(
       (value) => setState(
         () {
           this.interval = interval;
@@ -60,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    binanceFetch("1m");
+    binanceFetch(interval);
     super.initState();
   }
 
@@ -107,12 +108,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: AspectRatio(
-          aspectRatio: 1.2,
+          aspectRatio: 1.5,
           child: StreamBuilder(
             stream: _channel == null ? null : _channel!.stream,
             builder: (context, snapshot) {
               updateCandlesFromSnapshot(snapshot);
               return Candlesticks(
+                symbol: symbol,
                 onIntervalChange: (String value) async {
                   binanceFetch(value);
                 },
