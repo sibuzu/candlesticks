@@ -33,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
   WebSocketChannel? _channel;
 
   String interval = "1d";
-  String symbol = "BTCUSDT";
+  String symbol = "ETHBTC";
 
   void binanceFetch(String interval) {
     fetchCandles(symbol: symbol, interval: interval).then(
@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
       jsonEncode(
         {
           "method": "SUBSCRIBE",
-          "params": ["btcusdt@kline_" + interval],
+          "params": [symbol.toLowerCase() + "@kline_" + interval],
           "id": 1
         },
       ),
@@ -115,6 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
               updateCandlesFromSnapshot(snapshot);
               return Candlesticks(
                 symbol: symbol,
+                precision: 4,
                 onIntervalChange: (String value) async {
                   binanceFetch(value);
                 },

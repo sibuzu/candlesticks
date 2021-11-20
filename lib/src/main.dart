@@ -10,6 +10,7 @@ import 'models/candle.dart';
 /// current position and candles width).
 class Candlesticks extends StatefulWidget {
   final String symbol;
+  final int precision;
 
   final List<Candle> candles;
 
@@ -22,6 +23,7 @@ class Candlesticks extends StatefulWidget {
 
   Candlesticks({
     required this.symbol,
+    required this.precision,
     required this.candles,
     required this.onIntervalChange,
     required this.interval,
@@ -122,6 +124,7 @@ class _CandlesticksState extends State<Candlesticks> {
             curve: Curves.easeInOutCirc,
             builder: (_, width, __) {
               return Chart(
+                precision: widget.precision,
                 onScaleUpdate: (double scale) {
                   setState(() {
                     candleWidth *= scale;

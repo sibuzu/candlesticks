@@ -10,6 +10,7 @@ class PriceColumn extends StatelessWidget {
     required this.scaleIndex,
     required this.width,
     required this.height,
+    required this.precision,
   }) : super(key: key);
 
   final double tileHeight;
@@ -17,6 +18,7 @@ class PriceColumn extends StatelessWidget {
   final int scaleIndex;
   final double width;
   final double height;
+  final int precision;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class PriceColumn extends StatelessWidget {
                       color: ColorPalette.grayColor,
                     ),
                     Text(
-                      "-${(high - scales[scaleIndex] * index).toInt()}",
+                      "-${(high - scales[scaleIndex] * index).toStringAsFixed(precision)}",
                       style: TextStyle(
                         color: ColorPalette.grayColor,
                         fontSize: 12,

@@ -3,7 +3,6 @@ import 'package:candlesticks/src/theme/color_palette.dart';
 import 'package:candlesticks/src/widgets/candle_stick_widget.dart';
 import 'package:candlesticks/src/widgets/price_column.dart';
 import 'package:candlesticks/src/widgets/time_row.dart';
-import 'package:candlesticks/src/widgets/volume_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import '../models/candle.dart';
@@ -30,6 +29,8 @@ class Chart extends StatelessWidget {
   /// candleWidth controls the width of the single candles.
   /// range: [2...10]
   final double candleWidth;
+
+  final int precision;
 
   /// list of all candles to display in chart
   final List<Candle> candles;
@@ -64,6 +65,7 @@ class Chart extends StatelessWidget {
     required this.onPanDown,
     required this.onPanEnd,
     required this.hoverY,
+    required this.precision,
   });
 
   double log10(num x) => log(x) / ln10;
@@ -82,7 +84,7 @@ class Chart extends StatelessWidget {
     else if (log > 3)
       return "${price ~/ 1000}K";
     else
-      return "${price.toStringAsFixed(0)}";
+      return "${price.toStringAsFixed(precision)}";
   }
 
   String numberFormat(int value) {
@@ -162,6 +164,7 @@ class Chart extends StatelessWidget {
                             child: Stack(
                               children: [
                                 PriceColumn(
+                                  precision: precision,
                                   tileHeight: tileHeight,
                                   high: high as double,
                                   scaleIndex: scaleIndex,
@@ -195,7 +198,7 @@ class Chart extends StatelessWidget {
                                           child: Text(
                                             candles[index >= 0 ? index : 0]
                                                 .close
-                                                .round()
+                                                .toStringAsFixed(precision)
                                                 .toString(),
                                             style: TextStyle(
                                               color: ColorPalette.grayColor,
@@ -320,7 +323,7 @@ class Chart extends StatelessWidget {
                                               (hoverY - 20) /
                                                   (maxHeight * 0.75 - 40) *
                                                   (high - low))
-                                          .toStringAsFixed(0)
+                                          .toStringAsFixed(precision)
                                       : priceToString(getRoof(volumeHigh) *
                                           (1 -
                                               (hoverY - maxHeight * 0.75 - 10) /
