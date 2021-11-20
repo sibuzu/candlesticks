@@ -107,7 +107,7 @@ class Chart extends StatelessWidget {
         double tileHeight = 0;
         int scaleIndex = 0;
         final maxHeight = constraints.maxHeight - 20;
-        double chartHeight = maxHeight * 3 / 4 - 40;
+        double chartHeight = maxHeight - 40;
         for (int i = 0; i < scales.length; i++) {
           double newHigh = ((high ~/ scales[i] + 1) * scales[i]).toDouble();
           double newLow = ((low ~/ scales[i]) * scales[i]).toDouble();
@@ -169,17 +169,17 @@ class Chart extends StatelessWidget {
                                   high: high as double,
                                   scaleIndex: scaleIndex,
                                   width: constraints.maxWidth,
-                                  height: maxHeight * 3 / 4,
+                                  height: maxHeight,
                                 ),
                                 AnimatedPositioned(
                                   duration: Duration(microseconds: 300),
                                   right: 0,
-                                  top: maxHeight * 3 / 4 -
+                                  top: maxHeight -
                                       30 -
                                       ((candles[index >= 0 ? index : 0].close -
                                                   (low as double)) /
                                               (high - low)) *
-                                          (maxHeight * 3 / 4 - 40),
+                                          (maxHeight - 40),
                                   child: Row(
                                     children: [
                                       Container(
@@ -318,16 +318,11 @@ class Chart extends StatelessWidget {
                               color: ColorPalette.digalogColor,
                               child: Center(
                                 child: Text(
-                                  hoverY < maxHeight * 0.75
-                                      ? (high -
-                                              (hoverY - 20) /
-                                                  (maxHeight * 0.75 - 40) *
-                                                  (high - low))
-                                          .toStringAsFixed(precision)
-                                      : priceToString(getRoof(volumeHigh) *
-                                          (1 -
-                                              (hoverY - maxHeight * 0.75 - 10) /
-                                                  (maxHeight * 0.25 - 10))),
+                                  (high -
+                                          (hoverY - 20) /
+                                              (maxHeight - 40) *
+                                              (high - low))
+                                      .toStringAsFixed(precision),
                                   style: TextStyle(
                                     color: ColorPalette.grayColor,
                                     fontSize: 12,
