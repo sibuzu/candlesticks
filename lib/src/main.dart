@@ -93,7 +93,7 @@ class _CandlesticksState extends State<Candlesticks> {
                     });
                   },
                   child: Icon(
-                    Icons.remove,
+                    Icons.refresh,
                     color: ColorPalette.grayColor,
                   ),
                 ),
